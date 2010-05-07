@@ -447,6 +447,8 @@ All you have to do is to specify the relative path to your resource image. Let's
 ``sfImageTransformManager`` will automatically convert any filepath/filename with one of the following extensions (``jpg``, ``jpeg``, ``gif``, ``png``) to an instance of sfImage.
 The relative filepath will be looked up at the following locations: ``/path/to/your/project/data/resources/`` or (for the default formats) ``/path/to/your/project/plugins/sfImageTransformExtraPlugin/data/example-resources``.
 
+> As of version 1.0.2 you can also add your own resource locations in your app.yml. Look at the plugins app.yml for an example.
+
 So for the above example the files will be looked up in the following order:
 
 1. ``/path/to/your/project/data/resources/overlays/star_frame.png``
@@ -501,10 +503,32 @@ If the image source files are stored on the local filesystem accessible to the w
 
     class sfImageSourceSpecial extends sfImageSourceRemote implements sfImageSourceInterface
     {
-      ...
+      /**
+       * Returns an sfImageSource:// URL specific to the implementing stream wrapper
+       *
+       * @param  array  $parameters Current request parameters
+       * @return string sfImageSource:// URI
+       * @throws InvalidArgumentException
+       */
+      public static function buildURIfromParameters(array $parameters)
+      {
+        ...
+      }
+
+      /**
+       * Translates the given stream URL to the abolute path of the source image
+       *
+       * @param  string $path The given stream URL
+       * @return string
+       */
+      private function translatePathToFilename($path)
+      {
+        ...
+      }
+      
     }
 
-That is all you have to do.
+In most cases you only have to change/adapt the methods in the above example. That is all you have to do.
 
 Please make sure that the base URL (in the above example ``/thumbnails``) exists and is writable.
 
