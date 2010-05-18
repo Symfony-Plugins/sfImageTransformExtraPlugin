@@ -131,7 +131,7 @@ So we are back to the dimensions we wanted. Now we want a watermark on top of it
               - { adapter: GD, transformation: crop, param: { left: 90, top: 72, width: 120, height: 120 }}
               - { adapter: GD, transformation: rotate, param: { angle: 20, background: '#FFFFFF' }}
               - { adapter: GD, transformation: crop, param: { left: 17, top: 17, width: 120, height: 120 }}
-              - { adapter: GD, transformation: overlay, param: { overlay: overlays/logo.png, position: center }}
+              - { adapter: GD, transformation: overlay, param: { overlay: sfImage|overlays/logo.png, position: center }}
 
 ![star4](http://stat.ical.ly/thumbnails/star4.png "Watermarked")
 
@@ -144,8 +144,8 @@ Of course this is not "Web 2.0" enough yet..
               - { adapter: GD, transformation: crop, param: { left: 90, top: 72, width: 120, height: 120 }}
               - { adapter: GD, transformation: rotate, param: { angle: 20, background: '#FFFFFF' }}
               - { adapter: GD, transformation: crop, param: { left: 17, top: 17, width: 120, height: 120 }}
-              - { adapter: GD, transformation: overlay, param: { overlay: overlays/logo.png, position: center }}
-              - { adapter: GD, transformation: overlay, param: { overlay: overlays/star_frame.png, position: center }}
+              - { adapter: GD, transformation: overlay, param: { overlay: sfImage|overlays/logo.png, position: center }}
+              - { adapter: GD, transformation: overlay, param: { overlay: sfImage|overlays/star_frame.png, position: center }}
 
 ![star5](http://stat.ical.ly/thumbnails/star5.png "Star frame added")
 
@@ -158,13 +158,17 @@ Now we want to get rid of the bits that stick out by applying an alpha mask.
               - { adapter: GD, transformation: crop, param: { left: 90, top: 72, width: 120, height: 120 }}
               - { adapter: GD, transformation: rotate, param: { angle: 20, background: '#FFFFFF' }}
               - { adapter: GD, transformation: crop, param: { left: 17, top: 17, width: 120, height: 120 }}
-              - { adapter: GD, transformation: overlay, param: { overlay: overlays/logo.png, position: center }}
-              - { adapter: GD, transformation: overlay, param: { overlay: overlays/star_frame.png, position: center }}
-              - { adapter: GD, transformation: alphaMask, param: { mask: masks/star_mask.gif }}
+              - { adapter: GD, transformation: overlay, param: { overlay: sfImage|overlays/logo.png, position: center }}
+              - { adapter: GD, transformation: overlay, param: { overlay: sfImage|overlays/star_frame.png, position: center }}
+              - { adapter: GD, transformation: alphaMask, param: { mask: sfImage|masks/star_mask.gif }}
 
 ![star6](http://stat.ical.ly/thumbnails/star6.png "Stamped out")
 
 Done! ;)
+
+> Please note that for overlay and alphaMask transformations
+> you need to prefix the resource path with "sfImage|" as this
+> automatically converts the path into an sfImage object.
 
 
 ## How does it work?
