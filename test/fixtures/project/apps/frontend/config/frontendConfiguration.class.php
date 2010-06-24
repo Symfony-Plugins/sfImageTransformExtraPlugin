@@ -9,7 +9,7 @@
  * @ignore
  * @package    sfImageTransformExtraPluginFixtureProject
  * @author     Christian Schaefer <caefer@ical.ly>
- * @version    SVN: $Id: sfRawFileCache.class.php 63 2010-03-09 04:34:28Z caefer $
+ * @version    SVN: $Id$
  */
 
 class frontendConfiguration extends sfApplicationConfiguration

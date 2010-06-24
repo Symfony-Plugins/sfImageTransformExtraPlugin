@@ -10,7 +10,7 @@
  * @package    sfImageTransformExtraPlugin
  * @subpackage task
  * @author     Christian Schaefer <schaefer.christian@guj.de>
- * @version    SVN: $Id: $
+ * @version    SVN: $Id$
  */
 
 /**
