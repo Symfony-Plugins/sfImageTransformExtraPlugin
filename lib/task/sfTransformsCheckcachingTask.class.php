@@ -12,18 +12,31 @@ class sfTransformsCheckcachingTask extends sfBaseTask
 
     $this->namespace        = 'transforms';
     $this->name             = 'check-caching';
-    $this->briefDescription = 'Performs some basic tests to see if the caching is configured properly.';
+    $this->briefDescription = 'Run this task to check if your settings allow the thumbnail caching to work properly.';
     $this->detailedDescription = <<<EOF
-The [transforms:check-caching|INFO] task does things.
+The [transforms:check-caching|INFO] task performs a series of tests on your project to verify the thumbnail caching to work.
 Call it with:
 
-  [php symfony transforms:check-caching|INFO]
+  [php symfony transforms:check-caching application|INFO]
+
+  Please read the output carefully especially if one or more checks fail.
+
+  You can also run the tests for a specific environment by providing the env option. It defaults to prod which in most cases is the only environment you want your cache to be enabled.
+
+  [php symfony transforms:check-caching application --env=prod|INFO]
+
+  The tasks assumes the default route name sf_image for your thumbnails. If you use a different one you can specify it with the route-name option.
+
+  [php symfony transforms:check-caching application --route-name=your_thumbnail_route|INFO]
+
+  Please note that the permission checks can not be reliable as they are performed with the system permissions of your current user account while your web server should run with a different user account which might have different priviledges.
 EOF;
   }
 
   protected function execute($arguments = array(), $options = array())
   {
     $this->log($this->briefDescription);
+    $this->checkIfThumbnailModuleIsEnabled($arguments['application']);
     $this->checkIfNoScriptNameIsTrue($arguments['application']);
     $this->checkIfCachingIsActivated($arguments['application']);
     $absolutePathToThumbnailCacheDir = $this->checkForRoute($options['route-name']);
@@ -39,6 +52,24 @@ EOF;
     else
     {
       $this->log('Everything seems to be alright. If it still does not work it\'s probably a permissions problem.');
+    }
+  }
+
+  private function checkIfThumbnailModuleIsEnabled($application)
+  {
+    if(in_array('sfImageTransformator', sfConfig::get('sf_enabled_modules', array())))
+    {
+      $this->logSection('module', 'The module "sfImageTransformator" is enabled.', null, 'INFO');
+    }
+    else
+    {
+      $this->logSection('module', 'The module "sfImageTransformator" is not enabled in apps/'.$application.'/config/settings.yml', null, 'ERROR');
+      $this->logBlock(array(
+        'You must add the "sfImageTransformator" module to the \'enabled_modules\' setting',
+        'in your applications settings.yml. Otherwise the application will not be able to',
+        'generate any images.'
+      ), 'COMMENT');
+      $this->error = true;
     }
   }
 
